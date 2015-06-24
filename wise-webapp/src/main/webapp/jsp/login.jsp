@@ -2,6 +2,7 @@
 <%@ include file="/jsp/init.jsp" %>
 
 <%--@elvariable id="isHsql" type="boolean"--%>
+<%--@elvariable id="registrationEnabled" type="boolean"--%>
 
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" language="javascript">
@@ -69,7 +70,7 @@
 </div>
 <div class="row">
     <div id="register" class="col-md-12">
-        <c:if test="${requestScope['security.type']=='db'}">
+        <c:if test="${requestScope['security.type']=='db' && registrationEnabled == 'true'}">
             <b><spring:message code="NOT_READY_A_USER"/></b>
             <spring:message code="NOT_READY_A_USER_MESSAGE"/>
             <a href="c/user/registration">

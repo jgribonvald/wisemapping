@@ -32,6 +32,9 @@ public class LoginController {
     @Value("${database.driver}")
     private String driver;
 
+    @Value("${registration.enabled}")
+    private boolean registrationEnabled;
+
     @RequestMapping(value = "login", method = RequestMethod.GET)
     protected ModelAndView showLoginPage() {
         final User user = Utils.getUser(false);
@@ -41,6 +44,7 @@ public class LoginController {
         } else {
             result = new ModelAndView("login");
             result.addObject("isHsql", driver.contains("hsql"));
+            result.addObject("registrationEnabled", registrationEnabled);
         }
         return result;
     }

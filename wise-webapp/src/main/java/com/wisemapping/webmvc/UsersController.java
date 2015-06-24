@@ -60,6 +60,8 @@ public class UsersController {
     @Value("${google.recaptcha.enabled}")
     private boolean captchaEnabled;
 
+    @Value("${registration.enabled}")
+    private boolean registrationEnabled;
 
     @RequestMapping(value = "user/resetPassword", method = RequestMethod.GET)
     public ModelAndView showResetPasswordPage() {
@@ -68,7 +70,6 @@ public class UsersController {
 
     @RequestMapping(value = "user/resetPassword", method = RequestMethod.POST)
     public ModelAndView resetPassword(@RequestParam(required = true) String email) {
-
         ModelAndView result;
         try {
             userService.resetPassword(email);
@@ -85,6 +86,9 @@ public class UsersController {
 
     @RequestMapping(value = "user/registration", method = RequestMethod.GET)
     public ModelAndView showRegistrationPage(@NotNull HttpServletRequest request) {
+        if (!registrationEnabled)
+            throw new UserRegistrationDisabledException();
+
         if (captchaEnabled) {
             // If captcha is enabled, generate it ...
             final Properties prop = new Properties();
@@ -99,6 +103,9 @@ public class UsersController {
 
     @RequestMapping(value = "user/registration", method = RequestMethod.POST)
     public ModelAndView registerUser(@ModelAttribute("user") UserBean userBean, @NotNull HttpServletRequest request, @NotNull BindingResult bindingResult) throws WiseMappingException {
+        if (!registrationEnabled)
+            throw new UserRegistrationDisabledException();
+
         ModelAndView result;
         validateRegistrationForm(userBean, request, bindingResult);
         if (bindingResult.hasErrors()) {
