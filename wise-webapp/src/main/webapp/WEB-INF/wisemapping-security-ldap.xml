@@ -28,8 +28,8 @@
     <!-- ================================================== -->
     <bean id="ldapAuthProvider"
           class="org.springframework.security.ldap.authentication.LdapAuthenticationProvider">
-        <constructor-arg>
-            <bean class="org.springframework.security.ldap.authentication.BindAuthenticator">
+        <constructor-arg index="0">
+            <bean class="com.wisemapping.security.ldap.PasswordComparisonAuthenticator">
                 <constructor-arg ref="contextSource"/>
                 <property name="userSearch" ref="ldapUserSearch"/>
             </bean>
@@ -39,6 +39,7 @@
 
     <bean id="userDetailsContextMapper" class="com.wisemapping.security.ldap.LdapUserDetailsContextMapper">
         <property name="userService" ref="userService"/>
+        <property name="adminUser" value="${admin.user}" />
         <property name="ldapAttributeFirstName" value="${security.ldap.firstName.attribute}"/>
         <property name="ldapAttributeLastName" value="${security.ldap.lastName.attribute}"/>
     </bean>
